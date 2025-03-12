@@ -40,6 +40,7 @@ export async function GET(req: Request) {
     const userToken = verifyToken(req);
     const user = await prisma.users.findFirst({
       where: { user_id: userToken.id },
+      select: { user_id: true, username: true, fullname: true, role: true },
     });
     logger.info(`get user`);
 

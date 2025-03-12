@@ -43,6 +43,8 @@ export async function GET(req: NextRequest) {
   const id = req.nextUrl.searchParams.get("pic_id");
   const findTodo = await prisma.toDo.findMany({
     where: id ? { pic_id: Number(id) } : {},
+    orderBy: { updated_at: "desc" },
+    include: { Pic: { select: { username: true } } },
   });
   return NextResponse.json(findTodo);
 }
