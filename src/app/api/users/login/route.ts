@@ -4,6 +4,7 @@ import ApiError from "@/types/error.types";
 import { compareSync } from "bcrypt";
 import { sign } from "jsonwebtoken";
 import { verifyToken } from "@/lib/verifyToken";
+import logger from "@/lib/logger";
 
 export async function POST(req: Request) {
   try {
@@ -25,10 +26,11 @@ export async function POST(req: Request) {
       },
       process.env.TOKEN_KEY || "secret"
     );
-
+    logger.info(`login success (user_id:${checkUser.user_id})`);
     return NextResponse.json({ message: "login success", token });
   } catch (error) {
     const err = error as ApiError;
+    logger.error({ message: err.message, status: err.status });
     return NextResponse.json({ message: err.message }, { status: err.status });
   }
 }
@@ -39,9 +41,13 @@ export async function GET(req: Request) {
     const user = await prisma.users.findFirst({
       where: { user_id: userToken.id },
     });
+    logger.info(`get user`);
+
     return NextResponse.json({ message: "get profile", data: user });
   } catch (error) {
     const err = error as ApiError;
+    logger.error({ message: err.message, status: err.status });
+
     return NextResponse.json({ message: err.message }, { status: err.status });
   }
 }
