@@ -23,6 +23,7 @@ model Users {
   role       Role
   Pic        ToDo[]   @relation("pic_id")
   Creator    ToDo[]   @relation("creator_id")
+  Log        Log[]
 
   @@map("users")
 }
@@ -38,13 +39,34 @@ model ToDo {
   status       Status   @default(not_started)
   Pic          Users    @relation(fields: [pic_id], references: [user_id], name: "pic_id")
   Creator      Users    @relation(fields: [createdby_id], references: [user_id], name: "creator_id")
+  Log          Log[]
 
   @@map("todo")
+}
+
+model Log {
+  log_id      Int      @id @default(autoincrement())
+  action      action
+  todo_id     Int
+  updateby_id Int
+  updatedesc  String?
+  status_from Status?
+  status_to   Status?
+  created_at  DateTime @default(now())
+  ToDo        ToDo     @relation(fields: [todo_id], references: [todo_id])
+  Users       Users    @relation(fields: [updateby_id], references: [user_id])
+
+  @@map("log")
 }
 
 enum Role {
   Lead
   Team
+}
+
+enum action {
+  update
+  create
 }
 
 enum Status {
