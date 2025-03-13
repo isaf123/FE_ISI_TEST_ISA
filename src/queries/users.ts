@@ -14,3 +14,16 @@ export const useUser = (token: string) => {
   });
   return response.data;
 };
+
+export const useUserList = () => {
+  const response = useQuery({
+    queryFn: async () => {
+      const response = await axios.get(
+        `${process.env.NEXT_PUBLIC_API}/users/get-list`
+      );
+      return response;
+    },
+    queryKey: ["user"],
+  });
+  return response.data;
+};

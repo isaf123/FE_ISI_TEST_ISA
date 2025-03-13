@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from "next/server";
-import axios from "axios";
 
 export async function middleware(request: NextRequest) {
   const url = request.nextUrl.pathname;

@@ -6,9 +6,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 
-import * as z from "zod"; // Pastikan Zod sudah diinstal
+import * as z from "zod";
 
-// Skema validasi dengan Zod
 const registerSchema = z
   .object({
     username: z.string().min(3, "must fill 3 character for username"),
@@ -29,7 +28,7 @@ export default function Register() {
     handleSubmit,
     formState: { errors },
   } = useForm({
-    resolver: zodResolver(registerSchema), // Gunakan Zod untuk validasi
+    resolver: zodResolver(registerSchema),
     defaultValues: {
       username: "",
       fullname: "",
@@ -38,7 +37,6 @@ export default function Register() {
     },
   });
 
-  // Fungsi yang dipanggil saat form dikirimkan
   const onSubmit = async (data: {
     username: string;
     password: string;

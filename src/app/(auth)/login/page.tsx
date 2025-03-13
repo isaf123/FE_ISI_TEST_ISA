@@ -8,9 +8,8 @@ import { useRouter } from "next/navigation";
 
 import axios from "axios";
 
-import * as z from "zod"; // Pastikan Zod sudah diinstal
+import * as z from "zod";
 
-// Skema validasi dengan Zod
 const loginSchema = z.object({
   username: z.string().min(3, "must fill 3 character for username"),
   password: z.string().min(6, "must fill 6 character for username"),
@@ -23,14 +22,13 @@ export default function Login() {
     handleSubmit,
     formState: { errors },
   } = useForm({
-    resolver: zodResolver(loginSchema), // Gunakan Zod untuk validasi
+    resolver: zodResolver(loginSchema),
     defaultValues: {
       username: "",
       password: "",
     },
   });
 
-  // Fungsi yang dipanggil saat form dikirimkan
   const onSubmit = async (data: { username: string; password: string }) => {
     try {
       const login = await axios.post(
