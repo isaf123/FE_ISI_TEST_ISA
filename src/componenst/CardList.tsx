@@ -1,5 +1,6 @@
 import { cn } from "@/lib/utils";
-import { StatusTodo } from "@/types/types";
+import DropdownButtonUpdate from "@/componenst/DropdownUpdate";
+
 interface Props {
   children?: React.ReactNode;
   className?: string;
@@ -26,7 +27,16 @@ export default function CardList({
         color
       )}
     >
-      <div className={`h-[140px] w-[8px] rounded bg-red-400 `}></div>
+      <div
+        className={cn(
+          `h-[140px] w-[8px] rounded `,
+          status === "not_started" ? "bg-gray-500" : "",
+          status === "on_progress" ? "bg-yellow-500" : "",
+          status === "done" ? "bg-green-500" : "",
+          status === "reject" ? "bg-red-500" : ""
+        )}
+      ></div>
+
       <div className="flex-1 flex flex-col justify-between">
         <div>
           <div className="flex justify-between items-center">
@@ -36,11 +46,10 @@ export default function CardList({
 
           <h4 className="text-sm">{description}</h4>
         </div>
+
         <div className="w-full flex justify-between items-center">
           <p className="text-sm font-semibold">pic : {pic}</p>
-          <button className="rounded-md cursor-pointer px-3 py-2 bg-gray-800 text-gray-50 text-sm">
-            update
-          </button>
+          <DropdownButtonUpdate />
         </div>
       </div>
     </div>

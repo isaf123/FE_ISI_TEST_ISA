@@ -5,6 +5,8 @@ import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import DropdownButton from "@/componenst/Dropdown";
+import { useCreateTodo } from "@/queries/todo";
+import Cookies from "js-cookie";
 
 import * as z from "zod";
 
@@ -15,6 +17,7 @@ const registerSchema = z.object({
 });
 
 export default function CreateTodo() {
+  const createTodo = useCreateTodo();
   const router = useRouter();
   const {
     control,
@@ -35,7 +38,15 @@ export default function CreateTodo() {
     pic_id: number;
   }) => {
     try {
-      console.log(data);
+      const token = Cookies.get("token");
+      if (!token) throw "error";
+      await createTodo.mutateAsync({
+        description: data.description,
+        title: data.title,
+        pic_id: data.pic_id,
+        token,
+      });
+      router.push("/");
     } catch (error: any) {
       alert(error.response.data.message);
     }
@@ -62,6 +73,7 @@ export default function CreateTodo() {
             <p className="text-red-500 text-sm">{errors.title.message}</p>
           )}
         </div>
+
         <div>
           <p className="font-semibold text-sm">description</p>
           <Controller
@@ -71,7 +83,7 @@ export default function CreateTodo() {
               <textarea
                 placeholder="fill the description"
                 className="min-w-[300px] w-full rounded-md border border-input
-                      border-gray-400 bg-background px-3 py-2 text-sm shadow-sm min-h-[240px]
+                      border-gray-400 bg-background px-3 py-2 text-sm shadow-sm min-h-[180px]
                       transition-all placeholder:text-muted-foreground 
                       focus:outline-none focus:ring-1 "
                 {...field}
@@ -88,7 +100,7 @@ export default function CreateTodo() {
           <Controller
             name="pic_id"
             control={control}
-            render={({ field }) => <DropdownButton {...field} />}
+            render={({ field }) => <DropdownButton data={[]} {...field} />}
           />
           {errors.pic_id && (
             <p className="text-red-500 text-sm">{errors.pic_id.message}</p>

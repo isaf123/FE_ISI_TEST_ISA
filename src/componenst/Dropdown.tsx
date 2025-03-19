@@ -5,18 +5,18 @@ import { useUserList } from "@/queries/users";
 interface DropdownButtonProps {
   value?: number;
   onChange: (value: number) => void;
+  data: any[];
 }
 
 export default function DropdownButton({
   value,
   onChange,
+  data,
 }: DropdownButtonProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [name, setName] = useState("");
 
   const userList = useUserList();
-  console.log(userList?.data);
-
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
   };

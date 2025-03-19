@@ -28,7 +28,12 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <nav className="flex justify-between px-44 py-4 items-center border-b-1 border-gray-300 shadow-xs">
-          <p className="text-xl font-black">todo-list</p>
+          <p
+            className="text-xl font-black cursor-pointer"
+            onClick={() => router.push("/")}
+          >
+            todo-list
+          </p>
 
           <button
             className="rounded-md text-sm cursor-pointer px-3 py-2 bg-red-600 text-gray-50"
